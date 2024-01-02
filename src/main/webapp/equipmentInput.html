@@ -1,0 +1,43 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <style>
+        .heading {
+            color: orange;
+            font-size: 40px
+        }
+
+        .form {
+            color: green;
+        }
+
+        body {
+            padding: 40px;
+            text-align: center;
+            background-color: cadetblue;
+        }
+    </style>
+    <script src="equipmentInput.js"></script>
+    <body>
+    <div> Hello!!</div>
+
+    <div> Enter your instrument</div>
+    <select name = "instrumentDropdown" id = "userInstrument">
+        <option value = "Flute">Flute</option>
+        <option value = "Clarinet">Clarinet</option>
+        <option value = "Saxophone">Saxophone</option>
+    </select>
+
+    <div> Please enter what mouthpiece you use for our database</div>
+    <select name = "mouthpieceDropdown" id = "userMouthpiece">
+        <option value = "Mouthpiece0" id = "Mouthpiece0">  </option>
+        <option value = "Mouthpiece1" id = "Mouthpiece1">  </option>
+        <option value = "Mouthpiece2" id = "Mouthpiece2">  </option>
+        <option value = "Mouthpiece3" id = "Mouthpiece3">  </option>
+        <option value = "Mouthpiece4" id = "Mouthpiece4">  </option>
+    </select>
+    <div> Enter your favorite music brand</div>
+    <input type = "text" id = "musicBrand"/>
+   
+    <button onclick="eInput()"> Enter </button>
+</body>
+</head>

@@ -1,0 +1,43 @@
+<html>
+    <head>
+      <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <style>
+            .heading {
+              color: red;
+              font-size: 50px;
+              padding: 40px;
+            }
+
+            .subheading {
+              color: red;
+              font-size: 35px;
+              padding: 40px;
+            }
+            .form {
+              color: green;
+            }
+            .Button {
+              position:relative;
+              font-size: 50px;
+            }
+            body {
+             background-color: lightblue;
+             padding: 40px;
+             text-align: center;
+            }
+            </style>
+  <script src="Login.js"></script>
+  <script src = "changePassword.js"></script>
+  </head>
+    <body>
+        <div id = "heading" class = "heading"> Welcome to BandORama!</div>
+        <div class = "subheading"> Enter your username</div>
+        <input type = "text" id = "uName" class = "subheading"/>
+        <div class = "subheading"> Enter your password</div>
+        <input type = "password" id = "pswd" class = "subheading"/>
+        <a href = "changePassword.html" class = "Button"> Forgot Password? </a> ?
+        <button onclick="login()" class = "Button"> Go </button>
+        <a href = "Create.html" class = "Button"> Create </a>
+
+    </body>
+</html>
