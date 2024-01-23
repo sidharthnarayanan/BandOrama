@@ -12,8 +12,11 @@ function getInstrumentInfo(instrument) {
     })
 }
 
-
+//client processing query params
 $(document).ready(function(){
     const searchParams = new URLSearchParams(window.location.search);
     getInstrumentInfo(searchParams.get('instrument'));
+    $('#uploadForm').ajaxForm(function(data) {
+        // Handle the server's response
+      });
 })

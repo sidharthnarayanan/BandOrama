@@ -1,22 +1,34 @@
+"use strict"
+
 const cookieName = 'sessionid';
+
+
+
 
 var users = [
   {
     username: "sid",
     password: "god",
-    
-    
+    equipJson: {"equipment" : "Bass Clarinet", "instrument": "Clarinet", "brand" : "Yamaha Custom Low C" }
   }
 ];
 var instruments = [
   {
     instrument: "Flute",
     imageURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSclQcWMM-1vHvKOQUM-RLbJe9clq8eXFppOA&usqp=CAU"
+  },
+  {
+    instrument: "Clarinet",
+    imageURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSclQcWMM-1vHvKOQUM-RLbJe9clq8eXFppOA&usqp=CAU"
+  },
+  {
+    instrument: "Saxophone",
+    imageURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSclQcWMM-1vHvKOQUM-RLbJe9clq8eXFppOA&usqp=CAU"
   }
 ];
-var clarinetMouthpieces = ["Yamaha 4C", "Yamaha 5c", "Vandoren B50", "Vandoren RL40" , "Selmer Focus"];
-var saxophoneMouthpieces = ["Stock" , "Yamaha Custom EX" , "Mark IV prestige", "Jody Jazz Titanium", "Selmer C Star" ];
-    
+var clarinetMouthpieces = ["Yamaha 4C", "Yamaha 5c", "Vandoren B50", "Vandoren RL40", "Selmer Focus"];
+var saxophoneMouthpieces = ["Stock", "Yamaha Custom EX", "Mark IV prestige", "Jody Jazz Titanium", "Selmer C Star"];
+
 
 export function getUsers(req, res) {
   let username = getUserFromCookie(req);
@@ -43,16 +55,16 @@ export function getUser(req, res) {
 };
 
 
-export function getInstrument(req,res) {
+export function getInstrument(req, res) {
   return res.json(instruments);
 }
 
-export function getEquipment(req,res) {
-    var userJson = getUserFromCookie(req);
-    return res.json(userJson.equipJson); 
+export function getEquipment(req, res) {
+  var userJson = getUserFromCookie(req);
+  return res.json(userJson.equipJson);
 }
 
-export function getMouthpieceInfo(req,res) {
+export function getMouthpieceInfo(req, res) {
   let user = getUserFromCookie(req);
   if (user == null) return res.sendStatus(401);
   let instrument = req.query.instrument;
@@ -67,20 +79,19 @@ export function getMouthpieceInfo(req,res) {
   }
 }
 
-export function getInstrumentInfo(req,res) {
-    let instrumentInfo = [];
-    let instrument = req.query.instrument;
-    if (instrument==undefined) return res.sendStatus(400);
-    else 
-    {
-      for (const currentUser of users) {
-        console.log(currentUser.equipJson.instrument);
-        if ((currentUser.equipJson) && (currentUser.equipJson.instrument) && currentUser.equipJson.instrument == instrument) {
-            instrumentInfo.push({
-              username: currentUser.username, 
-              equipJson: currentUser.equipJson
-            });
-        }
+export function getInstrumentInfo(req, res) {
+  let instrumentInfo = [];
+  let instrument = req.query.instrument;
+  if (instrument == undefined) return res.sendStatus(400);
+  else {
+    for (const currentUser of users) {
+      console.log(currentUser.equipJson.instrument);
+      if ((currentUser.equipJson) && (currentUser.equipJson.instrument) && currentUser.equipJson.instrument == instrument) {
+        instrumentInfo.push({
+          username: currentUser.username,
+          equipJson: currentUser.equipJson
+        });
+      }
     }
     return res.json(instrumentInfo);
   }
@@ -89,8 +100,13 @@ export function getInstrumentInfo(req,res) {
 export function createUser(req, res) {
   var user = req.body;
   let status = true;
-  users.push(user);
-  return res.json({"status": status});
+  if (repetitiveUser(user.username)) {
+    status = false;
+  }
+  else {
+    users.push(user);
+  }
+  return res.json({ "status": status });
 };
 
 export function loginUser(req, res) {
@@ -109,36 +125,49 @@ export function changePassword(req, res) {
   let status = false;
   var userJson = getUserFromCookie(req);
   if (userJson == null) {
-    return res.json({"status": status});
+    return res.json({ "status": status });
   }
   else {
     userJson.password = req.body.password;
     status = true;
-    return res.json({"status": status});
+    return res.json({ "status": status });
   }
 }
 //takes user input and stores it in the bandUser object
-export function processEquipment(req,res) {
-  let status = false; 
+export function processEquipment(req, res) {
+  let status = false;
   var userJson = getUserFromCookie(req);
   if (userJson == null) {
-    return res.json({"status": status});
+    return res.json({ "status": status });
   }
   else {
     userJson.equipJson = req.body;
     status = true;
-    return res.json({"status": status});
+    return res.json({ "status": status });
   }
 
 }
 
-export function repetitiveUser(req,res) {
-  let status = false;
+function repetitiveUser(username) {
   for (const currentUser of users) {
-    if (currentUser.username == req.body.username) {
-      status = true;
-      return res.json({"status": status})
+    if (currentUser.username == username) {
+      return true;
     }
   }
-  return res.json({"status": status})
+  return false;
 }
+ export function upload (req, res) {
+  let file = req.file;
+  let status = false;
+  var userJson = getUserFromCookie(req);
+  if (userJson == null) {
+    return res.json({ "status": status });
+  }
+  else {
+    userJson.file = file;
+    status = true;
+    console.log("Received "+file.originalname+" of size:"+file.size+". New name:"+file.filename);
+    return res.json({ "status": status });
+  }
+};
+
